@@ -2,7 +2,10 @@
 Run while `node serve.ts` serves app/ on http://localhost:8080:
     python3 take-shots.py
 Seeds 13 earned trophies through the app's own localStorage key, so the
-dashboard ring, the grade bars and the category bars show live progress.
+dashboard ring, the grade bars and the category bars show live progress,
+and seeds the Positive Mental Attitude counter at 6/18 for the stepper shot.
+Shots: (1) dashboard, (2) Missables tab, (3) Progress & export tab,
+(4) detail panel with the counter stepper (Roadmap order on).
 """
 import json
 from playwright.sync_api import sync_playwright
@@ -24,36 +27,50 @@ with sync_playwright() as p:
         "localStorage.setItem(%s, %s)"
         % (json.dumps(KEY), json.dumps(json.dumps(earned_names)))
     )
+    # Seed the PMA counter at 6/18 so shot 4 shows the stepper mid-progress.
+    page.add_init_script(
+        "localStorage.setItem(%s, %s)"
+        % (json.dumps("sunset-ledger-counters-v1"), json.dumps(json.dumps([[28, 6]])))
+    )
     page.goto(BASE + "/", wait_until="networkidle")
     page.wait_for_timeout(400)
 
     # 1. Cover: dashboard ring + missable banner + live checklist cards.
     page.screenshot(path=f"{OUT}/1-dashboard.jpg", type="jpeg", quality=80)
 
-    # 2. Roadmap: the 8-phase vertical timeline.
-    page.click("#tab-roadmap")
+    # 2. Missables tab: the 3 point-of-no-return cards + 2 warning boxes.
+    # Scroll the section heading into view so the cards fill the frame.
+    page.click("#tab-missables")
     page.wait_for_timeout(300)
-    page.evaluate("document.querySelector('#view-roadmap h2').scrollIntoView()")
+    page.evaluate("document.querySelector('#view-missables h2').scrollIntoView()")
     page.wait_for_timeout(200)
-    page.screenshot(path=f"{OUT}/2-roadmap.jpg", type="jpeg", quality=80)
+    page.screenshot(path=f"{OUT}/2-missables.jpg", type="jpeg", quality=80)
 
-    # 3. Detail panel: open the missable trophy's guide.
+    # 3. Progress & export tab: PSN points, earned-by-grade/kind, stage grid,
+    # backup metadata. Scroll the heading in so the PSN box + bars are shown.
+    page.click("#tab-progress")
+    page.wait_for_timeout(300)
+    page.evaluate("document.querySelector('#view-progress h2').scrollIntoView()")
+    page.wait_for_timeout(200)
+    page.screenshot(path=f"{OUT}/3-progress.jpg", type="jpeg", quality=80)
+
+    # 4. Detail panel with the counter stepper: Roadmap order on, then open
+    # Positive Mental Attitude (counter seeded 6/18) so the shot shows both
+    # the stage grouping and the stepper.
     page.click("#tab-tracker")
     page.wait_for_timeout(200)
+    page.select_option("#order", "roadmap")
+    page.wait_for_timeout(300)
     page.evaluate("window.scrollTo(0, 0)")
     page.locator("article.card", has_text="Positive Mental Attitude").first.click()
     page.wait_for_timeout(300)
-    page.screenshot(path=f"{OUT}/3-detail.jpg", type="jpeg", quality=80)
-
-    # 4. Spoiler mode on: story trophies masked as "Hidden story trophy".
-    # Scroll to the Story group so the masked cards are what the shot shows.
-    page.check("#spoiler")
-    page.wait_for_timeout(300)
-    page.evaluate("window.scrollTo(0, 0)")
-    page.evaluate("[...document.querySelectorAll('h3.cat-head')].find(h => h.textContent.includes('Story')).scrollIntoView({block: 'start'})")
-    page.evaluate("window.scrollBy(0, -10)")
+    # Tap the stepper + then - so the shot shows the save stamp (a real
+    # counter write) while the counter ends back at the seeded 6/18.
+    page.locator(".stepper button", has_text="+").click()
     page.wait_for_timeout(200)
-    page.screenshot(path=f"{OUT}/4-spoiler.jpg", type="jpeg", quality=80)
+    page.locator(".stepper button", has_text="−").click()
+    page.wait_for_timeout(300)
+    page.screenshot(path=f"{OUT}/4-detail-stepper.jpg", type="jpeg", quality=80)
     browser.close()
 
 print("shots done")

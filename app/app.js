@@ -21,7 +21,7 @@ const ROADMAP = [
   { phase: 4, title: 'Collections & exploration', hours: '~20 hours', trophies: [28, 30, 31, 35, 42], text: 'Meditate at any remaining spots (check 18/18), complete 3 card sets, check in with WAiNK at 100 locations, discover 100 vehicles and explore all 52 areas of Leonida. These three counters climb together if you explore methodically instead of fast-travelling past everything.' },
   { phase: 5, title: 'Crime & combat', hours: '~15 hours', trophies: [33, 34, 36, 37, 38, 39, 40, 41, 43], text: 'Lose a 4-star wanted level with your partner, rob 3 shops back-to-back on one wanted level, take down 5 enemies in one Combat Focus, rob a jewelry store unseen, rob 5 bank vaults, an armored truck and one illegal operation per gang (9), and make the unscheduled departure at VCIA. Robberies also feed the Marked Bills laundering in Phase 6.' },
   { phase: 6, title: 'Money & grind', hours: '~30 hours', trophies: [52, 53, 54, 55, 32, 48, 15], text: 'Launder $250,000 of Marked Bills through your contacts, spend $100,000 across all shops, buy all 8 garage properties, register 10 vehicles on the Scooter Bros app, complete 50 challenges and keep making choices toward 500. The long counters (stunts, choices) should be nearly done by now if you played actively from the start.' },
-  { phase: 7, title: 'Cleanup & platinum', hours: '~10 hours', trophies: [14, 1, 44, 45, 49, 50, 51], text: 'Open Progress > Stats > 100% Completion and finish what is left — A Long Road (gold) is the last gate before the platinum pops. The five trophies labelled “Trigger not yet confirmed” sit here with honest labels: check a fresh published guide for their confirmed triggers rather than guessing.' },
+  { phase: 7, title: 'Cleanup & platinum', hours: '~10 hours', trophies: [14, 1, 44, 45, 47, 49, 50, 51], text: 'Open Progress > Stats > 100% Completion and finish what is left — A Long Road (gold) is the last gate before the platinum pops. The five trophies labelled “Trigger not yet confirmed” sit here with honest labels: check a fresh published guide for their confirmed triggers rather than guessing.' },
 ];
 
 const SOURCES = [
@@ -46,10 +46,45 @@ let byId = new Map();
 let earned = new Set(JSON.parse(localStorage.getItem(KEY) ?? '[]'));
 let selectedId = 28;
 
+// Standard PSN points per grade (Bronze 15, Silver 30, Gold 90, Platinum
+// 180). All 55 trophies: 1x180 + 2x90 + 6x30 + 46x15 = 1,230 pts.
+const PSN_POINTS = { platinum: 180, gold: 90, silver: 30, bronze: 15 };
+const PSN_TOTAL = 1230;
+
+// Per-trophy target counters (e.g. meditation spots 0/18), kept apart from
+// the earned ticks so a counter never marks a trophy earned by itself.
+const COUNTERS_KEY = 'sunset-ledger-counters-v1';
+let counters = new Map(JSON.parse(localStorage.getItem(COUNTERS_KEY) ?? '[]'));
+
+function saveCounters() {
+  localStorage.setItem(COUNTERS_KEY, JSON.stringify([...counters]));
+  const stamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const el = $('slimSaved');
+  if (el) el.textContent = '✓ Saved in this browser · ' + stamp;
+}
+
+// Story chapter per trophy, only where the research verifies it (ids 2-7:
+// research §2 table). Every other trophy is done in free roam after the
+// story, per the cited guides — no chapter is invented for them.
+const STORY_CHAPTER = { 2: 'Chapter 1', 3: 'Chapter 1', 4: 'Chapter 2', 5: 'Chapter 3', 6: 'Chapter 4', 7: 'Final mission' };
+
+// Extra verified launch guides used to fill a detail panel up to 3 linked
+// sources (a trophy's own sources come first; these never replace them).
+const FILL_SOURCES = [
+  ['KeenGamer — GTA 6 Trophy Guide & Platinum Roadmap', 'https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/'],
+  ['OutputLag — GTA 6 trophy list', 'https://outputlag.com/guides/gta-6-trophy-list/'],
+  ['PowerPyx — GTA 6 Trophy Guide & Roadmap', 'https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/'],
+  ['Exophase — GTA VI trophy list', 'https://www.exophase.com/game/grand-theft-auto-vi-psn/trophies/'],
+  ['PSNProfiles — GTA VI trophies', 'https://psnprofiles.com/trophies/43531-grand-theft-auto-vi'],
+];
+
 const $ = (id) => document.getElementById(id);
 
 function save() {
   localStorage.setItem(KEY, JSON.stringify([...earned]));
+  const stamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const el = $('slimSaved');
+  if (el) el.textContent = '✓ Saved in this browser · ' + stamp;
 }
 
 function isEarned(t) { return earned.has(t.name); }
@@ -122,6 +157,27 @@ function renderDashboard() {
     row.append(name, track, num);
     cb.append(row);
   }
+  updateSlimbar(n, total, pct);
+}
+
+// The slim sticky bar: progress that stays visible once the sunset band has
+// scrolled away. Grade chips, spoiler toggle with a live count, save stamp.
+function updateSlimbar(n, total, pct) {
+  $('slimCount').textContent = n + '/' + total + ' · ' + pct + '%';
+  const sg = $('slimGrades');
+  sg.replaceChildren();
+  for (const g of GRADE_ORDER) {
+    const list = trophies.filter((t) => t.grade === g);
+    const got = list.filter(isEarned).length;
+    const c = document.createElement('span');
+    c.className = 'slim-chip ' + g;
+    c.textContent = GRADE_LETTER[g] + ' ' + got + '/' + list.length;
+    sg.append(c);
+  }
+  const maskedCount = trophies.filter((t) => t.hidden && $('spoiler').checked && !isEarned(t)).length;
+  $('slimSpoiler').textContent = $('spoiler').checked
+    ? 'Spoilers hidden · ' + maskedCount
+    : 'Spoilers shown';
 }
 
 function matchesFilters(t) {
@@ -141,6 +197,25 @@ function matchesFilters(t) {
   return true;
 }
 
+// Roadmap phase a trophy belongs to (its stage). A trophy listed in two
+// phases (Cunning Stunts) takes the first; anything unlisted falls to the
+// cleanup phase, so Roadmap order always shows all 55.
+function stageOf(t) {
+  for (const ph of ROADMAP) if (ph.trophies.includes(t.id)) return ph;
+  return ROADMAP[7];
+}
+
+function groupHeader(title, gotCount, totalCount) {
+  const h = document.createElement('h3');
+  h.className = 'cat-head';
+  const titleEl = document.createElement('span'); titleEl.textContent = title;
+  const cnt = document.createElement('span');
+  cnt.className = 'cnt';
+  cnt.textContent = gotCount + '/' + totalCount + ' earned';
+  h.append(titleEl, cnt);
+  return h;
+}
+
 function renderList() {
   const groups = $('groups');
   groups.replaceChildren();
@@ -157,25 +232,35 @@ function renderList() {
     groups.append(d);
   }
   let totalShown = 0;
-  for (const cat of CATEGORY_ORDER) {
-    const list = shown.filter((t) => t.category === cat);
-    if (!list.length) continue;
-    totalShown += list.length;
-    const h = document.createElement('h3');
-    h.className = 'cat-head';
-    const title = document.createElement('span'); title.textContent = cat;
-    const cnt = document.createElement('span');
-    cnt.className = 'cnt';
-    cnt.textContent = list.filter(isEarned).length + '/' + trophies.filter((t) => t.category === cat).length + ' earned';
-    h.append(title, cnt);
-    groups.append(h);
+  const mkGrid = (list) => {
     const grid = document.createElement('div');
     grid.className = 'cards';
     for (const t of list) grid.append(card(t));
-    groups.append(grid);
+    return grid;
+  };
+  if ($('order').value === 'roadmap') {
+    // Roadmap order: group the same cards per roadmap stage, with progress
+    // per stage, so the checklist follows the platinum route.
+    for (const ph of ROADMAP) {
+      const inPhase = trophies.filter((t) => stageOf(t) === ph);
+      const list = shown.filter((t) => stageOf(t) === ph);
+      if (!list.length) continue;
+      totalShown += list.length;
+      groups.append(groupHeader('Stage ' + ph.phase + ' · ' + ph.title, inPhase.filter(isEarned).length, inPhase.length));
+      groups.append(mkGrid(list));
+    }
+  } else {
+    for (const cat of CATEGORY_ORDER) {
+      const list = shown.filter((t) => t.category === cat);
+      if (!list.length) continue;
+      totalShown += list.length;
+      groups.append(groupHeader(cat, list.filter(isEarned).length, trophies.filter((t) => t.category === cat).length));
+      groups.append(mkGrid(list));
+    }
   }
   const spoilerNote = $('spoiler').checked ? ' Spoilers on: story trophies stay hidden until earned.' : ' Spoilers off: every name and description is shown.';
-  $('status').textContent = 'Showing ' + totalShown + ' of ' + trophies.length + ' trophies (' + earned.size + ' earned).' + spoilerNote;
+  const orderNote = $('order').value === 'roadmap' ? ' Order: Roadmap.' : ' Order: Category.';
+  $('status').textContent = 'Showing ' + totalShown + ' of ' + trophies.length + ' trophies (' + earned.size + ' earned).' + spoilerNote + orderNote;
 }
 
 function card(t) {
@@ -220,7 +305,8 @@ function card(t) {
   if (t.target && !masked(t)) {
     const tl = document.createElement('div');
     tl.className = 'target-line';
-    tl.textContent = 'PSN target: 0/' + t.target.total + (t.target.unit ? ' ' + t.target.unit : '') + ' ' + t.target.label;
+    const have = counters.get(t.id) ?? 0;
+    tl.textContent = 'PSN target: ' + have + '/' + t.target.total + (t.target.unit ? ' ' + t.target.unit : '') + ' ' + t.target.label;
     body.append(tl);
   }
   el.append(box, medal(t), body);
@@ -253,8 +339,54 @@ function renderDetail() {
   if (t.target) {
     const tg = document.createElement('p');
     tg.className = 'target-line';
-    tg.textContent = 'PSN target: 0/' + t.target.total + (t.target.unit ? ' ' + t.target.unit : '') + ' ' + t.target.label + '  ·  Category: ' + t.category;
+    const have = counters.get(t.id) ?? 0;
+    tg.textContent = 'PSN target: ' + have + '/' + t.target.total + (t.target.unit ? ' ' + t.target.unit : '') + ' ' + t.target.label + '  ·  Category: ' + t.category;
     d.append(tg);
+    if (!masked(t)) {
+      // Interactive counter stepper: tap - / + to track progress toward the
+      // PSN target. It never marks the trophy earned on its own.
+      const step = document.createElement('div');
+      step.className = 'stepper';
+      const minus = document.createElement('button');
+      minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', 'Decrease counter');
+      minus.addEventListener('click', () => {
+        counters.set(t.id, Math.max(0, (counters.get(t.id) ?? 0) - 1));
+        saveCounters(); renderAll();
+      });
+      const val = document.createElement('strong');
+      val.textContent = have + '/' + t.target.total;
+      const plus = document.createElement('button');
+      plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Increase counter');
+      plus.addEventListener('click', () => {
+        counters.set(t.id, Math.min(t.target.total, (counters.get(t.id) ?? 0) + 1));
+        saveCounters(); renderAll();
+      });
+      const cap = document.createElement('span');
+      cap.textContent = t.target.label;
+      step.append(minus, val, plus, cap);
+      d.append(step);
+    }
+  }
+  if (!masked(t)) {
+    // Structured info boxes: where this trophy sits on the roadmap, and the
+    // short where/how in our own words (first two sentences of the guide).
+    const boxes = document.createElement('div');
+    boxes.className = 'info-boxes';
+    const ph = stageOf(t);
+    const stageBox = document.createElement('div');
+    stageBox.className = 'info-box';
+    const stageH = document.createElement('h6'); stageH.textContent = 'Roadmap stage · Chapter';
+    const stageP = document.createElement('p');
+    stageP.textContent = 'Stage ' + ph.phase + ' · ' + ph.title + ' — ' + (STORY_CHAPTER[t.id] ?? 'Free roam');
+    stageBox.append(stageH, stageP);
+    const whereBox = document.createElement('div');
+    whereBox.className = 'info-box';
+    const whereH = document.createElement('h6'); whereH.textContent = 'Where / How';
+    const whereP = document.createElement('p');
+    whereP.textContent = t.guide.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ');
+    whereBox.append(whereH, whereP);
+    boxes.append(stageBox, whereBox);
+    d.append(boxes);
   }
   if (!masked(t)) {
     const gh = document.createElement('h5'); gh.textContent = 'Guide — in our own words';
@@ -279,11 +411,23 @@ function renderDetail() {
     const sh = document.createElement('h5'); sh.textContent = 'Sources';
     const ul = document.createElement('ul');
     ul.className = 'sources';
-    for (const s of t.sources) {
+    // Every trophy shows at least 3 linked sources, each with its retrieved
+    // date. The trophy's own sources come first; the fill-ins are verified
+    // launch guides from the same research, never a guessed URL.
+    const shown = [...t.sources];
+    for (const [name, url] of FILL_SOURCES) {
+      if (shown.length >= 3) break;
+      if (shown.some((s) => s.url === url)) continue;
+      shown.push({ name, url });
+    }
+    for (const s of shown) {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = s.url; a.textContent = s.name; a.target = '_blank'; a.rel = 'noopener';
-      li.append('↗ ', a);
+      const when = document.createElement('span');
+      when.className = 'retrieved';
+      when.textContent = ' · retrieved 2026-11-19';
+      li.append('↗ ', a, when);
       ul.append(li);
     }
     d.append(sh, ul);
@@ -334,6 +478,74 @@ function renderRoadmap() {
   }
 }
 
+// Progress & export tab: PSN points (standard formula), earned-by-grade and
+// earned-by-kind bars, the roadmap stages as a mini-grid, and backup
+// metadata (last export / import file, time, trophy count).
+function barRow(label, got, total) {
+  const row = document.createElement('div');
+  row.className = 'stat-bar';
+  const lbl = document.createElement('div');
+  lbl.className = 'lbl';
+  const a = document.createElement('span'); a.textContent = label;
+  const b = document.createElement('span'); b.textContent = got + '/' + total;
+  lbl.append(a, b);
+  const track = document.createElement('div');
+  track.className = 'track';
+  const fill = document.createElement('div');
+  fill.className = 'fill';
+  fill.style.width = (total ? (got / total) * 100 : 0) + '%';
+  track.append(fill);
+  row.append(lbl, track);
+  return row;
+}
+
+function renderProgress() {
+  const pts = trophies.filter(isEarned).reduce((sum, t) => sum + (PSN_POINTS[t.grade] ?? 0), 0);
+  const pct = Math.round((pts / PSN_TOTAL) * 100);
+  $('psnStat').textContent = pts.toLocaleString('en-US') + ' / 1,230 pts · ' + pct + '%';
+
+  const gs = $('gradeStats');
+  gs.replaceChildren();
+  for (const g of GRADE_ORDER) {
+    const list = trophies.filter((t) => t.grade === g);
+    gs.append(barRow(g[0].toUpperCase() + g.slice(1), list.filter(isEarned).length, list.length));
+  }
+
+  const ks = $('kindStats');
+  ks.replaceChildren();
+  for (const [kind, label] of Object.entries(KIND_LABEL)) {
+    const list = trophies.filter((t) => t.kind === kind);
+    if (list.length) ks.append(barRow(label, list.filter(isEarned).length, list.length));
+  }
+
+  const sg = $('stageGrid');
+  sg.replaceChildren();
+  for (const ph of ROADMAP) {
+    const inPhase = trophies.filter((t) => stageOf(t) === ph);
+    const got = inPhase.filter(isEarned).length;
+    const cell = document.createElement('div');
+    cell.className = 'stage-cell' + (got === inPhase.length && inPhase.length ? ' done' : '');
+    const num = document.createElement('strong');
+    num.textContent = 'Stage ' + ph.phase;
+    const name = document.createElement('span');
+    name.textContent = ph.title;
+    const prog = document.createElement('span');
+    prog.className = 'stage-prog';
+    prog.textContent = inPhase.length ? got + '/' + inPhase.length : 'no trophies — setup only';
+    cell.append(num, name, prog);
+    sg.append(cell);
+  }
+
+  const meta = $('backupMeta');
+  const exp = JSON.parse(localStorage.getItem('sunset-ledger-export-meta-v1') ?? 'null');
+  const imp = JSON.parse(localStorage.getItem('sunset-ledger-import-meta-v1') ?? 'null');
+  const lines = [];
+  if (exp) lines.push('Last export ' + exp.file + ' · ' + exp.count + ' trophies · ' + exp.time + ' UTC');
+  else lines.push('No export yet in this browser.');
+  if (imp) lines.push('Last import ' + imp.file + ' · ' + imp.count + ' trophies · ' + imp.time + ' UTC');
+  meta.textContent = lines.join(' — ');
+}
+
 function renderSources() {
   const ul = $('srcList');
   ul.replaceChildren();
@@ -351,10 +563,11 @@ function renderAll() {
   renderList();
   renderDetail();
   renderRoadmap();
+  renderProgress();
 }
 
 function showView(name) {
-  for (const v of ['tracker', 'roadmap', 'sources']) {
+  for (const v of ['tracker', 'roadmap', 'missables', 'progress', 'sources']) {
     $('view-' + v).hidden = v !== name;
     $('tab-' + v).classList.toggle('active', v === name);
   }
@@ -366,11 +579,11 @@ function initTabs() {
     b.addEventListener('click', () => showView(b.dataset.view));
   }
   const hash = (location.hash || '#tracker').slice(1);
-  showView(['tracker', 'roadmap', 'sources'].includes(hash) ? hash : 'tracker');
+  showView(['tracker', 'roadmap', 'missables', 'progress', 'sources'].includes(hash) ? hash : 'tracker');
 }
 
 function initControls() {
-  for (const id of ['search', 'kind', 'grade', 'category', 'earnedOnly', 'notEarned', 'spoiler']) {
+  for (const id of ['search', 'kind', 'grade', 'category', 'order', 'earnedOnly', 'notEarned', 'spoiler']) {
     $(id).addEventListener('input', renderList);
     $(id).addEventListener('change', renderList);
   }
@@ -381,36 +594,76 @@ function initControls() {
     o.value = c; o.textContent = c;
     catSel.append(o);
   }
-  $('export').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify({ game: 'Grand Theft Auto VI', earned: [...earned] }, null, 2)], { type: 'application/json' });
+  const doExport = () => {
+    const stamp = new Date();
+    const file = 'sunset-ledger-progress-' + stamp.toISOString().slice(0, 10) + '.json';
+    const payload = {
+      format: 'sunset-ledger-progress/v1',
+      game: 'Grand Theft Auto VI',
+      exportedAt: stamp.toISOString(),
+      earned: [...earned],
+      counters: Object.fromEntries(counters),
+      spoilerHidden: $('spoiler').checked,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'sunset-ledger-progress.json';
+    a.download = file;
     a.click();
     URL.revokeObjectURL(a.href);
-  });
-  $('import').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
+    localStorage.setItem('sunset-ledger-export-meta-v1', JSON.stringify({
+      file, count: earned.size,
+      time: stamp.toISOString().slice(0, 16).replace('T', ' '),
+    }));
+    renderProgress();
+  };
+  const doImport = async (input) => {
+    const file = input.files[0];
     if (!file) return;
     try {
       const data = JSON.parse(await file.text());
       const names = Array.isArray(data) ? data : data.earned;
       earned = new Set(names.filter((n) => trophies.some((t) => t.name === n)));
+      if (data && typeof data === 'object' && data.counters) {
+        counters = new Map(Object.entries(data.counters).map(([k, v]) => [Number(k), v]));
+        saveCounters();
+      }
+      if (data && typeof data === 'object' && typeof data.spoilerHidden === 'boolean') {
+        $('spoiler').checked = data.spoilerHidden;
+      }
+      localStorage.setItem('sunset-ledger-import-meta-v1', JSON.stringify({
+        file: file.name, count: earned.size,
+        time: new Date().toISOString().slice(0, 16).replace('T', ' '),
+      }));
       save(); renderAll();
     } catch {
       alert('That file is not a valid Sunset Ledger progress export.');
     }
-    e.target.value = '';
-  });
+    input.value = '';
+  };
+  $('export').addEventListener('click', doExport);
+  $('export2').addEventListener('click', doExport);
+  $('import').addEventListener('change', (e) => doImport(e.target));
+  $('import2').addEventListener('change', (e) => doImport(e.target));
   $('reset').addEventListener('click', () => {
     if (confirm('Clear all earned ticks?')) { earned = new Set(); save(); renderAll(); }
   });
   $('bannerOpen').addEventListener('click', () => {
-    selectedId = 28;
-    showView('tracker');
-    renderAll();
-    $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showView('missables');
+    window.scrollTo(0, 0);
   });
+  // Slim-bar spoiler toggle mirrors the tracker checkbox.
+  $('slimSpoiler').addEventListener('click', () => {
+    $('spoiler').checked = !$('spoiler').checked;
+    renderAll();
+  });
+  // Reveal the slim bar once the sunset band has scrolled away.
+  const hero = document.querySelector('.hero');
+  const onScroll = () => {
+    $('slimbar').classList.toggle('show', window.scrollY > (hero?.offsetHeight ?? 170));
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 
 const doc = await (await fetch('data/trophies.json')).json();

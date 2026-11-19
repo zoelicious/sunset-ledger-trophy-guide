@@ -52,6 +52,14 @@
   </div>
 </header>
 
+<div class="slimbar" id="slimbar" aria-label="Progress summary">
+  <span class="slim-title">Sunset Ledger</span>
+  <strong id="slimCount">0/55 · 0%</strong>
+  <span class="slim-grades" id="slimGrades"></span>
+  <button type="button" id="slimSpoiler" class="slim-spoiler">Spoilers shown</button>
+  <span class="slim-saved" id="slimSaved">✓ Saved in this browser</span>
+</div>
+
 <main>
   <section class="dash" id="dash" aria-label="Progress dashboard">
     <div class="ring-wrap">
@@ -70,13 +78,15 @@
   </section>
 
   <div class="missable-banner" id="missableBanner" role="alert">
-    <strong>⚠ Only 1 possibly missable trophy.</strong>
-    <span><b>Positive Mental Attitude</b> — meditate at all 18 spots. One early spot in Chapter 1 is gone once that chapter ends, and there is no mission replay or New Game+. Meditate at every spot the moment you see it. <button type="button" id="bannerOpen">Open its guide ↓</button></span>
+    <strong>⚠ 3 trophies with a point of no return.</strong>
+    <span><b>1 missable + 2 time-sensitive:</b> <b>Positive Mental Attitude</b> — meditate at all 18 spots; one early spot in Chapter 1 is gone once that chapter ends. <b>Strangers &amp; Freaks</b> and <b>A Long Road</b> are flagged time-sensitive by launch guides. There is no mission replay or New Game+. <button type="button" id="bannerOpen">See the Missables tab ↓</button></span>
   </div>
 
   <nav class="tabs" aria-label="Sections">
     <button type="button" data-view="tracker" class="tab active" id="tab-tracker">Tracker</button>
     <button type="button" data-view="roadmap" class="tab" id="tab-roadmap">Roadmap to Platinum</button>
+    <button type="button" data-view="missables" class="tab" id="tab-missables">Missables</button>
+    <button type="button" data-view="progress" class="tab" id="tab-progress">Progress &amp; export</button>
     <button type="button" data-view="sources" class="tab" id="tab-sources">Sources &amp; honesty</button>
   </nav>
 
@@ -86,6 +96,7 @@
       <label>Kind <select id="kind"><option value="all">All kinds</option><option value="story">Story</option><option value="missable">Missable</option><option value="collectibles">Collectibles</option><option value="activities">Activities</option><option value="side">Side story</option><option value="crime">Crime &amp; combat</option><option value="money">Money &amp; grind</option><option value="misc">One-off moments</option><option value="platinum">Platinum &amp; 100%</option><option value="online">Online</option></select></label>
       <label>Grade <select id="grade"><option value="all">All grades</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
       <label>Category <select id="category"><option value="all">All categories</option></select></label>
+      <label>Order <select id="order"><option value="category">Category</option><option value="roadmap">Roadmap</option></select></label>
       <label class="check"><input type="checkbox" id="earnedOnly"> Earned only</label>
       <label class="check"><input type="checkbox" id="notEarned"> Not yet earned</label>
       <label class="check"><input type="checkbox" id="spoiler"> Hide story spoilers</label>
@@ -108,6 +119,67 @@
     <div class="warn-box">
       <strong>Before you go on a rampage:</strong> your Criminal Profile can reach “Irredeemable”, and it is permanent. Do the wanton-destruction moments deliberately, not by accident, early in the game.
       <span class="src">Source: PowerPyx trophy guide &amp; roadmap; GTABase via eGamers.</span>
+    </div>
+  </section>
+
+  <section id="view-missables" class="view" hidden>
+    <h2>Missables — 3 with a point of no return</h2>
+    <p class="lede">From the official descriptions + cited launch guides. Positive Mental Attitude is the one trophy every guide flags as missable. The other two are flagged time-sensitive by launch guides — play them early rather than testing the cutoff. Our own research only strongly supports Positive Mental Attitude as missable; the time-sensitive flags below come from the launch guides cited on each card.</p>
+    <p class="chips-row">
+      <a href="#miss-pma">Ch 1 · Positive Mental Attitude</a>
+      <a href="#miss-sf">Ch 3 · Strangers &amp; Freaks</a>
+      <a href="#miss-alr">Mid-story · A Long Road</a>
+    </p>
+    <div class="miss-cards">
+      <article class="miss-card" id="miss-pma">
+        <div class="miss-top"><span class="badge miss">⚠ Missable</span><span class="miss-grade">Bronze · #28</span></div>
+        <h3>Positive Mental Attitude</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> the end of Chapter 1 — one early meditation spot is gone once that chapter ends, and there is no mission replay or New Game+ to go back.</p>
+        <p>Meditate at all 18 spots across Leonida's 10 locations. Meditate at every spot the moment you see one, and make a manual save at the start of each chapter. Sources disagree on the exact Chapter 1 spot — PowerPyx places it at Jason's house, OutputLag and eGamers at Lucia's balcony — so treat any early meditation prompt in Chapter 1 as the one that matters.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://egamers.io/gta-6-trophy-list-all-55-trophies-and-achievements-plus-the-hardest-ones/" target="_blank" rel="noopener">eGamers</a> — retrieved 2026-11-19</p>
+      </article>
+      <article class="miss-card" id="miss-sf">
+        <div class="miss-top"><span class="badge watch">Time-sensitive</span><span class="miss-grade">Silver · #25</span></div>
+        <h3>Strangers &amp; Freaks</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> Chapter 3 — launch guides flag the “Race Against Yago” strand as time-sensitive, with its cutoff in Chapter 3.</p>
+        <p>Complete 8 mission strands for strangers across Leonida. Finish stranger strands as they appear instead of leaving them for post-story cleanup — the Chapter 3 strand is the one the guides warn about. The counter in the tracker shows 0/8.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/" target="_blank" rel="noopener">KeenGamer</a> — retrieved 2026-11-19</p>
+      </article>
+      <article class="miss-card" id="miss-alr">
+        <div class="miss-top"><span class="badge watch">Time-sensitive</span><span class="miss-grade">Gold · #14</span></div>
+        <h3>A Long Road</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> mid-story — some optional missions that feed the 100% completion checklist close before the finale, so a checklist left for post-story cleanup may already be locked out.</p>
+        <p>Attain 100% Completion. Do optional missions as they appear and keep a manual save from mid-story, so a closed-off mission cannot strand the checklist. The bar itself is forgiving — about 60% true completion by PowerPyx's count — but only if nothing it needs has already closed.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/" target="_blank" rel="noopener">KeenGamer</a> — retrieved 2026-11-19</p>
+      </article>
+    </div>
+    <div class="warn-grid">
+      <div class="warn-box"><strong>No mission replay, no New Game+.</strong> Once a chapter ends you cannot replay its missions. Make a manual save at the start of every chapter, plus one more before the final mission — those saves are your only safety net. <span class="src">Source: PowerPyx trophy guide &amp; roadmap; OutputLag; eGamers.</span></div>
+      <div class="warn-box"><strong>Cheats disable trophies and saving.</strong> Never use cheats on your trophy save — they switch trophies off. PowerPyx lists 61 cheats, all unlocked only after the credits; keep them off this save entirely. <span class="src">Source: PowerPyx trophy guide &amp; roadmap.</span></div>
+    </div>
+  </section>
+
+  <section id="view-progress" class="view" hidden>
+    <h2>Progress &amp; export</h2>
+    <p class="lede">Two ways to read the same progress: trophies earned, and the PSN points they are worth.</p>
+    <div class="psn-box">
+      <div><span class="psn-label">PSN points toward the platinum</span>
+      <strong id="psnStat">0 / 1,230 pts · 0%</strong></div>
+      <p class="psn-formula">Standard PSN points: Bronze 15 · Silver 30 · Gold 90 · Platinum 180. All 55 trophies: 1×180 + 2×90 + 6×30 + 46×15 = 1,230 pts. (Some entries show 1,350 under a different convention; this ledger uses the standard formula above.)</p>
+    </div>
+    <div class="prog-grid">
+      <div class="prog-col"><h3>Earned by grade</h3><div id="gradeStats"></div></div>
+      <div class="prog-col"><h3>Earned by kind</h3><div id="kindStats"></div></div>
+    </div>
+    <h3>Roadmap stages</h3>
+    <div class="stage-grid" id="stageGrid"></div>
+    <h3>Back up or move your progress</h3>
+    <div class="backup-box">
+      <p>Your progress lives only in this browser until you export it. Export downloads a JSON file you can keep or import on another browser.</p>
+      <p><button id="export2" type="button">Export progress (.json)</button>
+      <label class="import">Import file <input id="import2" type="file" accept="application/json"></label></p>
+      <p class="backup-meta" id="backupMeta">No export yet in this browser.</p>
+      <p class="fine">File format sunset-ledger-progress/v1 · trophy names, counters, spoiler setting · exported files are named sunset-ledger-progress-YYYY-MM-DD.json.</p>
     </div>
   </section>
 
