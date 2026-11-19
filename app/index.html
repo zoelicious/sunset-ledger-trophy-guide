@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunset Ledger — GTA VI Trophy Guide &amp; Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <svg class="hero-art" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2b1a4e"/>
+        <stop offset=".45" stop-color="#c2410c"/>
+        <stop offset=".78" stop-color="#f97316"/>
+        <stop offset="1" stop-color="#fbbf24"/>
+      </linearGradient>
+      <radialGradient id="sun" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#fff7cc"/>
+        <stop offset=".6" stop-color="#fde68a"/>
+        <stop offset="1" stop-color="#f59e0b"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="200" fill="url(#sky)"/>
+    <circle cx="880" cy="92" r="58" fill="url(#sun)"/>
+    <g stroke="#1c0f2e" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8">
+      <path d="M700 62 q 6 -6 12 0 q 6 -6 12 0"/>
+      <path d="M760 48 q 5 -5 10 0 q 5 -5 10 0"/>
+    </g>
+    <path d="M0 200 L0 182 Q 180 172 360 182 T 720 180 T 1080 184 T 1200 180 L1200 200 Z" fill="#160a24" opacity=".75"/>
+    <g stroke="#12081f" stroke-width="4" fill="none" stroke-linecap="round">
+      <path d="M95 200 C 92 175 90 155 88 138"/>
+      <path d="M88 138 Q 55 118 32 132"/>
+      <path d="M88 138 Q 62 108 38 106"/>
+      <path d="M88 138 Q 86 104 72 92"/>
+      <path d="M88 138 Q 108 106 130 100"/>
+      <path d="M88 138 Q 118 116 142 122"/>
+      <path d="M1105 200 C 1108 172 1110 152 1112 138"/>
+      <path d="M1112 138 Q 1145 118 1168 132"/>
+      <path d="M1112 138 Q 1138 108 1162 106"/>
+      <path d="M1112 138 Q 1114 104 1128 92"/>
+      <path d="M1112 138 Q 1092 106 1070 100"/>
+      <path d="M1112 138 Q 1082 116 1058 122"/>
+    </g>
+  </svg>
+  <div class="hero-text">
+    <p class="kicker">Grand Theft Auto VI · PlayStation 5 · Works offline</p>
+    <h1>Sunset Ledger</h1>
+    <p class="sub">Every one of the 55 trophies, with its official name, description and grade, a guide in our own words that cites its sources, a roadmap to the platinum, and a checklist that remembers you.</p>
+    <p class="chips"><span>55 trophies</span><span>~200 hours to platinum</span><span>Difficulty 4/10</span><span>All offline</span><span>1 playthrough</span><span>No mission replay — save each chapter</span></p>
+  </div>
+</header>
+
+<main>
+  <section class="dash" id="dash" aria-label="Progress dashboard">
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 200 200" width="150" height="150" aria-hidden="true">
+        <circle cx="100" cy="100" r="84" fill="none" stroke="#e7dcc3" stroke-width="18"/>
+        <circle id="ringArc" cx="100" cy="100" r="84" fill="none" stroke="#c2410c" stroke-width="18" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+      </svg>
+      <div class="ring-center"><strong id="ringCount">0/55</strong><span id="ringPct">0% to platinum</span></div>
+    </div>
+    <div class="dash-side">
+      <h2>Your road to the platinum</h2>
+      <p id="dashLine">0 earned · 55 to go · platinum 0% there</p>
+      <div class="grade-bars" id="gradeBars"></div>
+      <div class="cat-bars" id="catBars"></div>
+    </div>
+  </section>
+
+  <div class="missable-banner" id="missableBanner" role="alert">
+    <strong>⚠ Only 1 possibly missable trophy.</strong>
+    <span><b>Positive Mental Attitude</b> — meditate at all 18 spots. One early spot in Chapter 1 is gone once that chapter ends, and there is no mission replay or New Game+. Meditate at every spot the moment you see it. <button type="button" id="bannerOpen">Open its guide ↓</button></span>
+  </div>
+
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" data-view="tracker" class="tab active" id="tab-tracker">Tracker</button>
+    <button type="button" data-view="roadmap" class="tab" id="tab-roadmap">Roadmap to Platinum</button>
+    <button type="button" data-view="sources" class="tab" id="tab-sources">Sources &amp; honesty</button>
+  </nav>
+
+  <section id="view-tracker" class="view">
+    <div class="controls">
+      <label class="search">Search <input id="search" type="search" placeholder="Trophy name, mission, keyword…"></label>
+      <label>Kind <select id="kind"><option value="all">All kinds</option><option value="story">Story</option><option value="missable">Missable</option><option value="collectibles">Collectibles</option><option value="activities">Activities</option><option value="side">Side story</option><option value="crime">Crime &amp; combat</option><option value="money">Money &amp; grind</option><option value="misc">One-off moments</option><option value="platinum">Platinum &amp; 100%</option><option value="online">Online</option></select></label>
+      <label>Grade <select id="grade"><option value="all">All grades</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
+      <label>Category <select id="category"><option value="all">All categories</option></select></label>
+      <label class="check"><input type="checkbox" id="earnedOnly"> Earned only</label>
+      <label class="check"><input type="checkbox" id="notEarned"> Not yet earned</label>
+      <label class="check"><input type="checkbox" id="spoiler"> Hide story spoilers</label>
+      <span class="spacer"></span>
+      <button id="export" type="button">Export progress</button>
+      <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
+      <button id="reset" type="button" class="danger">Reset</button>
+    </div>
+    <p class="status" id="status">Loading 55 trophies…</p>
+    <div class="tracker-grid">
+      <div id="groups" class="groups"></div>
+      <aside class="detail" id="detail" aria-label="Trophy guide"></aside>
+    </div>
+  </section>
+
+  <section id="view-roadmap" class="view" hidden>
+    <h2>Roadmap to the platinum</h2>
+    <p class="lede">One playthrough, about 200 hours, difficulty 4/10 — long, not hard. No online trophies, no difficulty trophies, no mission medals. Cheats disable trophies and saving, so never use them on your trophy save. There is no mission replay and no New Game+, so the saves in Phase 0 are your only safety net.</p>
+    <ol class="timeline" id="timeline"></ol>
+    <div class="warn-box">
+      <strong>Before you go on a rampage:</strong> your Criminal Profile can reach “Irredeemable”, and it is permanent. Do the wanton-destruction moments deliberately, not by accident, early in the game.
+      <span class="src">Source: PowerPyx trophy guide &amp; roadmap; GTABase via eGamers.</span>
+    </div>
+  </section>
+
+  <section id="view-sources" class="view" hidden>
+    <h2>Sources &amp; honesty</h2>
+    <p class="lede">Every guide in this ledger is written in our own words. A source is cited, never copied. The official trophy names, descriptions and grades are shown exactly as PlayStation publishes them — that is the one exception, and it is why the list matches the official 55/55.</p>
+    <h3>What we do not know yet</h3>
+    <ul class="honest">
+      <li><b>5 trophies have unconfirmed triggers</b> — In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out There, Ten Pin. Their guides say only what the official description gives, and carry the label “Trigger not yet confirmed”. No unlock steps are invented for them.</li>
+      <li><b>The Chapter 1 meditation spot is described two ways</b> — PowerPyx says “at Jason's house”, OutputLag and eGamers say Lucia's balcony. This guide does not pick one: it says “one early meditation spot in Chapter 1” and cites both.</li>
+      <li><b>4 or 5 chapters?</b> The trophy list names Chapters 1–4 plus a final mission; PowerPyx describes the story as 5 chapters. This guide does not claim a chapter count anywhere.</li>
+      <li><b>28 of the 55 trophies are hidden on PSN</b> until earned. This guide hides the 12 story trophies behind the spoiler setting until you earn them.</li>
+    </ul>
+    <h3>Sources used (verified 19 Nov 2026)</h3>
+    <ul class="src-list" id="srcList"></ul>
+    <p class="fine">Site names whose GTA 6 guide URLs were not verified first-hand in our research (PlayStationTrophies.org, TrueTrophies, GTABase, Beebom, CULTR, TechWiser, Insider Gaming, PC Gamer, Press-Start, GTAForums) are not linked here — no slug was guessed.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Sunset Ledger — an unofficial fan-made guide. Grand Theft Auto and GTA are trademarks of Rockstar Games; this guide uses no Rockstar logo, artwork or game screenshots. The sunset art above is drawn by us in SVG. Progress is stored only in your browser (localStorage); export it to keep a backup.</p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
