@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunset Ledger — GTA VI Trophy Guide &amp; Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <svg class="hero-art" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2b1a4e"/>
+        <stop offset=".45" stop-color="#c2410c"/>
+        <stop offset=".78" stop-color="#f97316"/>
+        <stop offset="1" stop-color="#fbbf24"/>
+      </linearGradient>
+      <radialGradient id="sun" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#fff7cc"/>
+        <stop offset=".6" stop-color="#fde68a"/>
+        <stop offset="1" stop-color="#f59e0b"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="200" fill="url(#sky)"/>
+    <circle cx="880" cy="92" r="58" fill="url(#sun)"/>
+    <g stroke="#1c0f2e" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8">
+      <path d="M700 62 q 6 -6 12 0 q 6 -6 12 0"/>
+      <path d="M760 48 q 5 -5 10 0 q 5 -5 10 0"/>
+    </g>
+    <path d="M0 200 L0 182 Q 180 172 360 182 T 720 180 T 1080 184 T 1200 180 L1200 200 Z" fill="#160a24" opacity=".75"/>
+    <g stroke="#12081f" stroke-width="4" fill="none" stroke-linecap="round">
+      <path d="M95 200 C 92 175 90 155 88 138"/>
+      <path d="M88 138 Q 55 118 32 132"/>
+      <path d="M88 138 Q 62 108 38 106"/>
+      <path d="M88 138 Q 86 104 72 92"/>
+      <path d="M88 138 Q 108 106 130 100"/>
+      <path d="M88 138 Q 118 116 142 122"/>
+      <path d="M1105 200 C 1108 172 1110 152 1112 138"/>
+      <path d="M1112 138 Q 1145 118 1168 132"/>
+      <path d="M1112 138 Q 1138 108 1162 106"/>
+      <path d="M1112 138 Q 1114 104 1128 92"/>
+      <path d="M1112 138 Q 1092 106 1070 100"/>
+      <path d="M1112 138 Q 1082 116 1058 122"/>
+    </g>
+  </svg>
+  <div class="hero-text">
+    <p class="kicker">Grand Theft Auto VI · PlayStation 5 · Works offline</p>
+    <h1>Sunset Ledger</h1>
+    <p class="sub">Every one of the 55 trophies, with its official name, description and grade, a guide in our own words that cites its sources, a roadmap to the platinum, and a checklist that remembers you.</p>
+    <p class="chips"><span>55 trophies</span><span>~200 hours to platinum</span><span>Difficulty 4/10</span><span>All offline</span><span>1 playthrough</span><span>No mission replay — save each chapter</span></p>
+  </div>
+</header>
+
+<div class="audit" style="background:#160a24;color:#fde68a;padding:8px 16px;font-size:13px;line-height:1.5;border-bottom:2px solid #c2410c;" aria-label="Audit strip">55 official trophies · 1 Platinum · 2 Gold · 6 Silver · 46 Bronze · 28 hidden on PSN · 111 sources cited · 55/55 guides with numbered steps · 5 triggers unconfirmed · 1 possibly missable · sources read 19 Nov 2026</div>
+
+<div class="slimbar" id="slimbar" aria-label="Progress summary">
+  <span class="slim-title">Sunset Ledger</span>
+  <strong id="slimCount">0/55 · 0%</strong>
+  <span class="slim-grades" id="slimGrades"></span>
+  <button type="button" id="slimSpoiler" class="slim-spoiler">Spoilers shown</button>
+  <span class="slim-saved" id="slimSaved">✓ Saved in this browser</span>
+</div>
+
+<main>
+  <section class="dash" id="dash" aria-label="Progress dashboard">
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 200 200" width="150" height="150" aria-hidden="true">
+        <circle cx="100" cy="100" r="84" fill="none" stroke="#e7dcc3" stroke-width="18"/>
+        <circle id="ringArc" cx="100" cy="100" r="84" fill="none" stroke="#c2410c" stroke-width="18" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+      </svg>
+      <div class="ring-center"><strong id="ringCount">0/55</strong><span id="ringPct">0% to platinum</span></div>
+    </div>
+    <div class="dash-side">
+      <h2>Your road to the platinum</h2>
+      <p id="dashLine">0 earned · 55 to go · platinum 0% there</p>
+      <div class="grade-bars" id="gradeBars"></div>
+      <div class="cat-bars" id="catBars"></div>
+    </div>
+  </section>
+
+  <div class="missable-banner" id="missableBanner" role="alert">
+    <strong>⚠ 3 trophies with a point of no return.</strong>
+    <span><b>1 missable + 2 time-sensitive:</b> <b>Positive Mental Attitude</b> — meditate at all 18 spots; one early spot in Chapter 1 is gone once that chapter ends. <b>Strangers &amp; Freaks</b> and <b>A Long Road</b> are flagged time-sensitive by launch guides. There is no mission replay or New Game+. <button type="button" id="bannerOpen">See the Missables tab ↓</button></span>
+  </div>
+
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" data-view="tracker" class="tab active" id="tab-tracker">Tracker</button>
+    <button type="button" data-view="roadmap" class="tab" id="tab-roadmap">Roadmap to Platinum</button>
+    <button type="button" data-view="missables" class="tab" id="tab-missables">Missables</button>
+    <button type="button" data-view="progress" class="tab" id="tab-progress">Progress &amp; export</button>
+    <button type="button" data-view="sources" class="tab" id="tab-sources">Sources &amp; honesty</button>
+  </nav>
+
+  <section id="view-tracker" class="view">
+    <div class="controls">
+      <label class="search">Search <input id="search" type="search" placeholder="Trophy name, mission, keyword…"></label>
+      <label>Kind <select id="kind"><option value="all">All kinds</option><option value="story">Story</option><option value="missable">Missable</option><option value="collectibles">Collectibles</option><option value="activities">Activities</option><option value="side">Side story</option><option value="crime">Crime &amp; combat</option><option value="money">Money &amp; grind</option><option value="misc">One-off moments</option><option value="platinum">Platinum &amp; 100%</option><option value="online">Online</option></select></label>
+      <label>Grade <select id="grade"><option value="all">All grades</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
+      <label>Category <select id="category"><option value="all">All categories</option></select></label>
+      <label>Order <select id="order"><option value="category">Category</option><option value="roadmap">Roadmap</option></select></label>
+      <label class="check"><input type="checkbox" id="earnedOnly"> Earned only</label>
+      <label class="check"><input type="checkbox" id="notEarned"> Not yet earned</label>
+      <label class="check"><input type="checkbox" id="spoiler"> Hide story spoilers</label>
+      <span class="spacer"></span>
+      <button id="export" type="button">Export progress</button>
+      <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
+      <button id="reset" type="button" class="danger">Reset</button>
+    </div>
+    <p class="status" id="status">Loading 55 trophies…</p>
+    <div class="tracker-grid">
+      <div id="groups" class="groups"></div>
+      <aside class="detail" id="detail" aria-label="Trophy guide"></aside>
+    </div>
+  </section>
+
+  <section id="view-roadmap" class="view" hidden>
+    <h2>Roadmap to the platinum</h2>
+    <p class="lede">One playthrough, about 200 hours, difficulty 4/10 — long, not hard. No online trophies, no difficulty trophies, no mission medals. Cheats disable trophies and saving, so never use them on your trophy save. There is no mission replay and no New Game+, so the saves in Phase 0 are your only safety net.</p>
+    <ol class="timeline" id="timeline"></ol>
+    <div class="warn-box">
+      <strong>Before you go on a rampage:</strong> your Criminal Profile can reach “Irredeemable”, and it is permanent. Do the wanton-destruction moments deliberately, not by accident, early in the game.
+      <span class="src">Source: PowerPyx trophy guide &amp; roadmap; GTABase via eGamers.</span>
+    </div>
+  </section>
+
+  <section id="view-missables" class="view" hidden>
+    <h2>Missables — 3 with a point of no return</h2>
+    <p class="lede">From the official descriptions + cited launch guides. Positive Mental Attitude is the one trophy every guide flags as missable. The other two are flagged time-sensitive by launch guides — play them early rather than testing the cutoff. Our own research only strongly supports Positive Mental Attitude as missable; the time-sensitive flags below come from the launch guides cited on each card.</p>
+    <p class="chips-row">
+      <a href="#miss-pma">Ch 1 · Positive Mental Attitude</a>
+      <a href="#miss-sf">Ch 3 · Strangers &amp; Freaks</a>
+      <a href="#miss-alr">Mid-story · A Long Road</a>
+    </p>
+    <div class="miss-cards">
+      <article class="miss-card" id="miss-pma">
+        <div class="miss-top"><span class="badge miss">⚠ Missable</span><span class="miss-grade">Bronze · #28</span></div>
+        <h3>Positive Mental Attitude</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> the end of Chapter 1 — one early meditation spot is gone once that chapter ends, and there is no mission replay or New Game+ to go back.</p>
+        <p>Meditate at all 18 spots across Leonida's 10 locations. Meditate at every spot the moment you see one, and make a manual save at the start of each chapter. Sources disagree on the exact Chapter 1 spot — PowerPyx places it at Jason's house, OutputLag and eGamers at Lucia's balcony — so treat any early meditation prompt in Chapter 1 as the one that matters.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://egamers.io/gta-6-trophy-list-all-55-trophies-and-achievements-plus-the-hardest-ones/" target="_blank" rel="noopener">eGamers</a> — retrieved 2026-11-19</p>
+      </article>
+      <article class="miss-card" id="miss-sf">
+        <div class="miss-top"><span class="badge watch">Time-sensitive</span><span class="miss-grade">Silver · #25</span></div>
+        <h3>Strangers &amp; Freaks</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> Chapter 3 — launch guides flag the “Race Against Yago” strand as time-sensitive, with its cutoff in Chapter 3.</p>
+        <p>Complete 8 mission strands for strangers across Leonida. Finish stranger strands as they appear instead of leaving them for post-story cleanup — the Chapter 3 strand is the one the guides warn about. The counter in the tracker shows 0/8.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/" target="_blank" rel="noopener">KeenGamer</a> — retrieved 2026-11-19</p>
+      </article>
+      <article class="miss-card" id="miss-alr">
+        <div class="miss-top"><span class="badge watch">Time-sensitive</span><span class="miss-grade">Gold · #14</span></div>
+        <h3>A Long Road</h3>
+        <p class="miss-por"><strong>Point of no return:</strong> mid-story — some optional missions that feed the 100% completion checklist close before the finale, so a checklist left for post-story cleanup may already be locked out.</p>
+        <p>Attain 100% Completion. Do optional missions as they appear and keep a manual save from mid-story, so a closed-off mission cannot strand the checklist. The bar itself is forgiving — about 60% true completion by PowerPyx's count — but only if nothing it needs has already closed.</p>
+        <p class="miss-src">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/" target="_blank" rel="noopener">PowerPyx</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/" target="_blank" rel="noopener">OutputLag</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/" target="_blank" rel="noopener">KeenGamer</a> — retrieved 2026-11-19</p>
+      </article>
+    </div>
+    <div class="warn-grid">
+      <div class="warn-box"><strong>No mission replay, no New Game+.</strong> Once a chapter ends you cannot replay its missions. Make a manual save at the start of every chapter, plus one more before the final mission — those saves are your only safety net. <span class="src">Source: PowerPyx trophy guide &amp; roadmap; OutputLag; eGamers.</span></div>
+      <div class="warn-box"><strong>Cheats disable trophies and saving.</strong> Never use cheats on your trophy save — they switch trophies off. PowerPyx lists 61 cheats, all unlocked only after the credits; keep them off this save entirely. <span class="src">Source: PowerPyx trophy guide &amp; roadmap.</span></div>
+    </div>
+  </section>
+
+  <section id="view-progress" class="view" hidden>
+    <h2>Progress &amp; export</h2>
+    <p class="lede">Two ways to read the same progress: trophies earned, and the PSN points they are worth.</p>
+    <div class="psn-box">
+      <div><span class="psn-label">PSN points toward the platinum</span>
+      <strong id="psnStat">0 / 1,230 pts · 0%</strong></div>
+      <p class="psn-formula">Standard PSN points: Bronze 15 · Silver 30 · Gold 90 · Platinum 180. All 55 trophies: 1×180 + 2×90 + 6×30 + 46×15 = 1,230 pts. (Some entries show 1,350 under a different convention; this ledger uses the standard formula above.)</p>
+    </div>
+    <div class="prog-grid">
+      <div class="prog-col"><h3>Earned by grade</h3><div id="gradeStats"></div></div>
+      <div class="prog-col"><h3>Earned by kind</h3><div id="kindStats"></div></div>
+    </div>
+    <h3>Roadmap stages</h3>
+    <div class="stage-grid" id="stageGrid"></div>
+    <h3>Back up or move your progress</h3>
+    <div class="backup-box">
+      <p>Your progress lives only in this browser until you export it. Export downloads a JSON file you can keep or import on another browser.</p>
+      <p><button id="export2" type="button">Export progress (.json)</button>
+      <label class="import">Import file <input id="import2" type="file" accept="application/json"></label></p>
+      <p class="backup-meta" id="backupMeta">No export yet in this browser.</p>
+      <p class="fine">File format sunset-ledger-progress/v1 · trophy names, counters, spoiler setting · exported files are named sunset-ledger-progress-YYYY-MM-DD.json.</p>
+    </div>
+  </section>
+
+  <section id="view-sources" class="view" hidden>
+    <h2>Sources &amp; honesty</h2>
+    <p class="lede">Every guide in this ledger is written in our own words. A source is cited, never copied. The official trophy names, descriptions and grades are shown exactly as PlayStation publishes them — that is the one exception, and it is why the list matches the official 55/55.</p>
+    <h3>What we do not know yet</h3>
+    <ul class="honest">
+      <li><b>5 trophies have unconfirmed triggers</b> — In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out There, Ten Pin. Their guides say only what the official description gives, and carry the label “Trigger not yet confirmed”. No unlock steps are invented for them.</li>
+      <li><b>The Chapter 1 meditation spot is described two ways</b> — PowerPyx says “at Jason's house”, OutputLag and eGamers say Lucia's balcony. This guide does not pick one: it says “one early meditation spot in Chapter 1” and cites both.</li>
+      <li><b>4 or 5 chapters?</b> The trophy list names Chapters 1–4 plus a final mission; PowerPyx describes the story as 5 chapters. This guide does not claim a chapter count anywhere.</li>
+      <li><b>28 of the 55 trophies are hidden on PSN</b> until earned. This guide hides the 12 story trophies behind the spoiler setting until you earn them.</li>
+    </ul>
+    <h3>Sources used (verified 19 Nov 2026)</h3>
+    <ul class="src-list" id="srcList"></ul>
+    <p class="fine">Site names whose GTA 6 guide URLs were not verified first-hand in our research (PlayStationTrophies.org, TrueTrophies, GTABase, Beebom, CULTR, TechWiser, Insider Gaming, PC Gamer, Press-Start, GTAForums) are not linked here — no slug was guessed.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Sunset Ledger — an unofficial fan-made guide. Grand Theft Auto and GTA are trademarks of Rockstar Games; this guide uses no Rockstar logo, artwork or game screenshots. The sunset art above is drawn by us in SVG. Progress is stored only in your browser (localStorage); export it to keep a backup. Play it forward: <a href="https://make.fun/r/nmy46sr8">make.fun/r/nmy46sr8</a></p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

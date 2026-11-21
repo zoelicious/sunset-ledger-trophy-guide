@@ -336,6 +336,18 @@ function renderDetail() {
   off.className = 'official';
   off.textContent = masked(t) ? 'Hidden on PSN — earn it to reveal.' : 'Official description: “' + t.description + '”';
   d.append(off);
+  if (t.id === 28 && !masked(t)) {
+    // Sources disagree on the Chapter 1 meditation spot: show both versions.
+    const dis = document.createElement('div');
+    dis.className = 'disagree';
+    dis.style.cssText = 'margin:10px 0;padding:10px 12px;border:2px solid #b91c1c;border-radius:8px;background:#fef2f2;color:#7f1d1d;';
+    const disTitle = document.createElement('strong');
+    disTitle.textContent = 'SOURCES DISAGREE — both versions shown. ';
+    const disBody = document.createElement('span');
+    disBody.textContent = 'PowerPyx places the early Chapter 1 meditation spot at Jason\u2019s house; OutputLag and eGamers place it at Lucia\u2019s balcony. This guide does not pick one — treat any early meditation prompt in Chapter 1 as the one that matters.';
+    dis.append(disTitle, disBody);
+    d.append(dis);
+  }
   if (t.target) {
     const tg = document.createElement('p');
     tg.className = 'target-line';
